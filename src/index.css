@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    background: radial-gradient(circle at 50% -20%, #1e1b4b 0%, #020204 60%, #000000 100%);
+    color: #e0ffff;
+    font-family: 'JetBrains Mono', monospace;
+    overflow: hidden;
+  }
+}
+
+/* 3D Isometric Canvas */
+.perspective-container {
+  perspective: 2000px;
+  transform-style: preserve-3d;
+}
+
+.isometric-grid {
+  transform: translateY(-80px) translateZ(600px) rotateX(45deg) rotateZ(-45deg) scale(0.65);
+  transform-style: preserve-3d;
+  box-shadow: 0 0 100px rgba(0, 255, 255, 0.1);
+  border: 1px solid rgba(0, 255, 255, 0.1);
+  scrollbar-color: rgba(6, 182, 212, 0.5) transparent;
+  background: rgba(0, 10, 20, 0.5);
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.isometric-node {
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s ease;
+  transform-style: preserve-3d;
+  transform: translateZ(0px);
+}
+
+.isometric-node.elevated-low {
+  transform: translateZ(10px);
+}
+
+.isometric-node.elevated-mid {
+  transform: translateZ(20px);
+}
+
+.isometric-node.elevated-high {
+  transform: translateZ(40px);
+}
+
+/* Only apply 3D sides to nodes that are elevated to save immense frame rate / GPU usage */
+.isometric-node.elevated-low::before,
+.isometric-node.elevated-low::after,
+.isometric-node.elevated-mid::before,
+.isometric-node.elevated-mid::after,
+.isometric-node.elevated-high::before,
+.isometric-node.elevated-high::after {
+  content: '';
+  position: absolute;
+  background: inherit;
+  opacity: 0.7;
+}
+
+/* 3D Sides */
+.isometric-node.elevated-low::before,
+.isometric-node.elevated-mid::before,
+.isometric-node.elevated-high::before {
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  transform-origin: top;
+  transform: rotateX(-90deg);
+  filter: brightness(0.6);
+}
+
+.isometric-node.elevated-low::after,
+.isometric-node.elevated-mid::after,
+.isometric-node.elevated-high::after {
+  top: 0;
+  left: 100%;
+  width: 40px;
+  height: 100%;
+  transform-origin: left;
+  transform: rotateY(90deg);
+  filter: brightness(0.4);
+}
+
+/* HUD Styling */
+.hud-panel {
+  background: rgba(0, 5, 10, 0.7);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.05), 0 0 30px rgba(0, 0, 0, 0.8);
+}
+
+
